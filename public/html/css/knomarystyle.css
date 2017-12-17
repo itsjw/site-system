@@ -1,0 +1,82 @@
+.teachers-choose label{
+    margin-bottom: 0;
+}
+
+
+.added-courses .btn-addon i {
+    position: relative;
+    float: left;
+    width: 22px;
+    height: 22px;
+    margin: -2px -6px;
+    margin-right: 12px;
+    line-height: 22px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.1);
+    border-radius: 2px 0 0 2px;
+}
+
+.md-modal .chosen-container-multi .chosen-choices .search-field input[type="text"]{
+    color: #616d75!important;
+    font-weight: 500!important;
+    padding: 6px 12px!important;
+}
+.md-modal select{
+    color: #616d75!important;
+    font-weight: 500!important;
+    padding: 6px 12px!important;
+}
+::-webkit-input-placeholder { /* WebKit browsers */
+    color: #616d75!important;
+    font-weight: 500!important;
+}
+
+.yellowcolor-group{
+    background: yellow;
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+.redcolor-group{
+    background: red;
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+.bluecolor-group{
+    background: blue;
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+.group-stud-table td:last-child{
+    text-align: right;
+}
+
+.app-content-body.table-group{
+    padding-bottom:90px;
+}
+
+.md-modal button.btn.btn-sm.btn-primary {
+    color: white!important;
+    border-radius: 3px!important;
+    border: 0px solid white;
+    border-bottom: 2px solid #568029!important;
+    background: linear-gradient(to bottom, rgba(165,190,0,1) 0%,rgba(103,148,54,1) 100%);
+    font-size: 14px;
+    padding: 6px 30px;
+    margin-top: 27px;
+}
+.md-modal .panel-heading{
+    background: none;
+}
+.md-modal input.form-control {
+    color: #616d75!important;
+    font-weight: 500!important;
+}

@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+  <meta charset="utf-8" />
+  <title>Сообщения</title>
+  <meta name="description" content="app, web app, responsive, responsive layout, admin, admin panel, admin dashboard, flat, flat ui, ui kit, AngularJS, ui route, charts, widgets, components" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <link rel="stylesheet" href="../libs/assets/animate.css/animate.css" type="text/css" />
+  <link rel="stylesheet" href="../libs/assets/font-awesome/css/font-awesome.min.css" type="text/css" />
+  <link rel="stylesheet" href="../libs/assets/simple-line-icons/css/simple-line-icons.css" type="text/css" />
+  <link rel="stylesheet" href="../libs/jquery/bootstrap/dist/css/bootstrap.css" type="text/css" />
+
+  <link rel="stylesheet" href="css/font.css" type="text/css" />
+  <link rel="stylesheet" href="css/app.css" type="text/css" />
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="knomarystyle.css">
+</head>
+<body>
+<div class="app app-header-fixed">
+  
+
+     <!-- header -->
+  <header id="header" class="app-header navbar" role="menu">
+      <!-- navbar header -->
+      <div class="navbar-header bg-dark">
+        <button class="pull-right visible-xs dk" ui-toggle-class="show" target=".navbar-collapse">
+          <i class="glyphicon glyphicon-cog"></i>
+        </button>
+        <button class="pull-right visible-xs" ui-toggle-class="off-screen" target=".app-aside" ui-scroll="app">
+          <i class="glyphicon glyphicon-align-justify"></i>
+        </button>
+        <!-- brand -->
+        <a href="#/" class="navbar-brand text-lt">
+          <span class="hidden-folded m-l-xs">Logo</span>
+        </a>
+        <!-- / brand -->
+      </div>
+      <!-- / navbar header -->
+
+      <!-- navbar collapse -->
+      <div class="collapse pos-rlt navbar-collapse box-shadow bg-white-only">
+        <!-- buttons -->
+        <div class="nav navbar-nav hidden-xs">
+          <a href="#" class="btn no-shadow navbar-btn" ui-toggle-class="app-aside-folded" target=".app">
+            <i class="fa fa-dedent fa-fw text"></i>
+            <i class="fa fa-indent fa-fw text-active"></i>
+          </a>
+        </div>
+        <!-- / buttons -->
+
+        <!-- search form -->
+        <form class="navbar-form navbar-form-sm navbar-left shift" ui-shift="prependTo" data-target=".navbar-collapse" role="search" ng-controller="TypeaheadDemoCtrl">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="text" ng-model="selected" typeahead="state for state in states | filter:$viewValue | limitTo:8" class="form-control input-sm bg-light no-border rounded padder" placeholder="Поиск...">
+              <span class="input-group-btn">
+                <button type="submit" class="btn btn-sm bg-light rounded"><i class="fa fa-search"></i></button>
+              </span>
+            </div>
+          </div>
+        </form>
+        <!-- / search form -->
+
+        <!-- nabar right -->
+        <ul class="nav navbar-nav navbar-right">
+          <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+              <i class="fa fa-envelope-o" aria-hidden="true"></i>
+              <span class="visible-xs-inline">Сообщения</span>
+              <span class="badge badge-sm up bg-danger pull-right-xs">2</span>
+            </a>
+            <!-- dropdown -->
+            <div class="dropdown-menu w-xl animated fadeInUp">
+              <div class="panel bg-white">
+                <div class="panel-heading b-light bg-light">
+                  <strong>У вас <span>2</span> новых сообщения</strong>
+                </div>
+                <div class="list-group">
+                  <a href class="list-group-item">
+                    <span class="pull-left m-r thumb-sm">
+                      <img src="img/a0.jpg" alt="..." class="img-circle">
+                    </span>
+                    <span class="clear block m-b-none">
+                      Привет! Не подскажешь, как...<br>
+                      <small class="text-muted">10 минут назад</small>
+                    </span>
+                  </a>
+                </div>
+                
+                
+                  <div class="list-group">
+                  <a href class="list-group-item">
+                    <span class="pull-left m-r thumb-sm">
+                      <img src="img/a0.jpg" alt="..." class="img-circle">
+                    </span>
+                    <span class="clear block m-b-none">
+                      Алексей! На этот раз все отлично!<br>
+                      <small class="text-muted">вчера</small>
+                    </span>
+                  </a>
+                </div>
+                
+
+              </div>
+            </div>
+            <!-- / dropdown -->
+          </li>
+          <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+              <i class="icon-bell fa-fw"></i>
+              <span class="visible-xs-inline">Уведомления</span>
+              <span class="badge badge-sm up bg-danger pull-right-xs">1</span>
+            </a>
+            <!-- dropdown -->
+            <div class="dropdown-menu w-xl animated fadeInUp">
+              <div class="panel bg-white">
+                <div class="panel-heading b-light bg-light">
+                  <strong>У вас <span>1</span> новое уведомление</strong>
+                </div>
+                <div class="list-group">
+                  <a href class="list-group-item">
+                    <span class="clear block m-b-none">
+                      Новый тест "Финальный тест" в курсе "Управление развитием" пройден пользователем "Андрей Каплунов". Требуется оценка развернутого ответа.<br>
+                      <small class="text-muted">43 минуты назад</small>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+            <!-- / dropdown -->
+          </li>
+          <li class="dropdown">
+            <a href="#" data-toggle="dropdown" class="dropdown-toggle clear" data-toggle="dropdown">
+              <span class="thumb-sm avatar pull-right m-t-n-sm m-b-n-sm m-l-sm">
+                <img src="img/a0.jpg" alt="...">
+                <i class="on md b-white bottom"></i>
+              </span>
+              <span class="hidden-sm hidden-md">Евгений Орлов</span> <b class="caret"></b>
+            </a>
+            <!-- dropdown -->
+            <ul class="dropdown-menu animated fadeInUp w">
+              <li>
+                <a href="student_cabinet.html">Профиль</a>
+              </li>
+              <li class="divider"></li>
+              <li>
+                <a href="index.html">Выйти</a>
+              </li>
+            </ul>
+            <!-- / dropdown -->
+          </li>
+        </ul>        <!-- / navbar right -->
+      </div>
+      <!-- / navbar collapse -->
+  </header>
+  <!-- / header -->
+
+
+    <!-- aside -->
+  <aside id="aside" class="app-aside hidden-xs bg-dark">
+      <div class="aside-wrap">
+        <div class="navi-wrap">
+          <!-- user -->
+          <div class="clearfix hidden-xs text-center hide show" id="aside-user">
+            <div class="dropdown wrapper">
+              <a href="teacher_cabinet.html">
+                <span class="thumb-lg w-auto-folded avatar m-t-sm">
+                  <img src="img/a0.jpg" class="img-full" alt="...">
+                </span>
+              </a>
+              <a href="#" data-toggle="dropdown" class="dropdown-toggle hidden-folded">
+                <span class="clear">
+                  <span class="block m-t-sm">
+                    <strong class="font-bold text-lt">Евгений Орлов</strong> 
+                    <b class="caret"></b>
+                  </span>
+                  <span class="text-muted text-xs block">Тренер</span>
+                </span>
+              </a>
+              <!-- dropdown -->
+              <ul class="dropdown-menu animated fadeInUp w hidden-folded">
+                              
+                <li>
+                  <a href="teacher_cabinet.html">Профиль</a>
+                </li>
+               
+               
+                <li>
+                  <a href="index.html">Выйти</a>
+                </li>
+              </ul>
+              <!-- / dropdown -->
+            </div>
+            <div class="line dk hidden-folded"></div>
+          </div>
+          <!-- / user -->
+
+          <!-- nav -->
+          <nav ui-nav class="navi clearfix">
+            <ul class="nav">
+              <li>
+                <a href="teacher_students.html">
+                  <i class="icon-user icon"></i>
+                  <span>Пользователи</span>
+                </a>
+              </li>
+                            
+               <li>
+                <a href="teacher_my_courses.html">
+                  <i class="glyphicon glyphicon-file icon"></i>
+                  <span>Каталог курсов</span>
+                </a>
+              </li>
+        
+              <li>
+                <a href="teacher_mail.html">
+                  <i class="glyphicon glyphicon-envelope icon"></i>
+                  <span>Сообщения</span>
+                </a>
+              </li>
+              <li>
+                <a href="teacher_anayitics.html">
+                  <i class="fa fa-bar-chart"></i>
+                  <span>Аналитика</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <!-- nav -->
+
+         
+        </div>
+      </div>
+  </aside>
+  <!-- / aside -->
+
+
+  <!-- content -->
+  <div id="content" class="app-content" role="main">
+  	<div class="app-content-body app-content-full">
+	    
+
+
+
+<!-- hbox layout -->
+<div class="hbox hbox-auto-xs bg-light " ng-init="
+  app.settings.asideFolded = true; 
+  app.settings.asideFixed = true;
+  app.settings.asideDock = false;
+  app.settings.container = false;
+  app.hideAside = false
+  ">
+  <!-- column -->
+  <div class="col w lter b-r" ng-controller="CustomTabController">
+    <div class="vbox">
+      <div class="wrapper b-b">
+        <div class="font-thin h4 text-black">Сообщения</div>
+      </div>
+      <div class="nav-tabs-alt">
+        <ul class="nav nav-tabs nav-justified">
+          <li class="active">
+            <a data-target="#tab-1" role="tab" data-toggle="tab">Собеседники</a>
+          </li>
+        </ul>
+      </div>
+      <div class="row-row">
+        <div class="cell scrollable hover">
+          <div class="cell-inner">
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab-1">
+                <div class="wrapper-md">
+	                
+	                
+	                 <div class="clearfix chat-search">
+                <div class="input-group">
+                  <input type="text" class="form-control input-sm" placeholder="Поиск собеседников">
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn btn-default btn-sm"><i class="fa fa-search"></i></button>
+                  </span>
+                </div>
+              </div>
+	                
+	                
+	                
+	                
+                    <ul class="list-group list-group-lg no-bg auto">
+                <li class="list-group-item clearfix">
+                  <span class="pull-left thumb-sm avatar m-r">
+                    <img src="img/a4.jpg" alt="...">
+                    <i class="on b-white bottom"></i>
+                  </span>
+                  <span class="clear">
+                    <span>Иван Иванов</span>
+                  </span>
+                </li>
+                <li class="list-group-item clearfix">
+                  <span class="pull-left thumb-sm avatar m-r">
+                    <img src="img/a5.jpg" alt="...">
+                    <i class="on b-white bottom"></i>
+                  </span>
+                  <span class="clear">
+                    <span>Иван Иванов</span>
+                  </span>
+                </li>
+              </ul>
+
+                </div>
+              </div>
+              <div class="tab-pane" id="tab-2">
+                <div class="wrapper-md">
+	                
+	                
+	                 <div class="clearfix chat-search">
+                <div class="input-group">
+                  <input type="text" class="form-control input-sm" placeholder="Поиск собеседников">
+                  <span class="input-group-btn">
+                    <button type="submit" class="btn btn-default btn-sm"><i class="fa fa-search"></i></button>
+                  </span>
+                </div>
+              </div>
+	                
+	                
+	                
+	                
+                    <ul class="list-group list-group-lg no-bg auto">
+                <li class="list-group-item clearfix">
+                  <span class="pull-left thumb-sm avatar m-r">
+                    <img src="img/a4.jpg" alt="...">
+                    <i class="on b-white bottom"></i>
+                  </span>
+                  <span class="clear">
+                    <span>Иван Иванов</span>
+                  </span>
+                </li>
+                <li class="list-group-item clearfix">
+                  <span class="pull-left thumb-sm avatar m-r">
+                    <img src="img/a5.jpg" alt="...">
+                    <i class="on b-white bottom"></i>
+                  </span>
+                  <span class="clear">
+                    <span>Иван Иванов</span>
+                  </span>
+                </li>
+              </ul>
+
+                </div>
+              </div>
+            
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /column -->
+
+  <!-- column -->
+  <div class="col">
+    <div class="vbox">
+      <div class="row-row">
+        <div class="cell">
+          <div class="cell-inner">
+            <div class="wrapper-md">
+             
+             
+             
+             
+             
+             <div class="col-lg-9 col-md-9 col-sm-4 col-xs-12 chat-right-side">
+            <div class="panel panel-default">
+              <div class="panel-body chat-body">
+                <div class="m-b chat-date text-center">
+                  <p class="status status-offline"><span></span>Офлайн</p>
+                </div>
+                <div class="m-b">
+                  <a href="" class="pull-left thumb-sm avatar"><img src="img/a2.jpg" alt="..."></a>
+                  <div class="m-l-xxl">
+                    <div class="pos-rlt wrapper b b-light r r-2x">
+                      <span class="arrow left pull-up"></span>
+                      <p class="m-b-none">Нажав на кнопку «Написать реферат», вы лично создаете уникальный текст, причем именно от вашего нажатия на кнопку зависит, какой именно текст получится — таким образом, авторские права на реферат принадлежат только вам.</p>
+                    </div>
+                    <small class="text-muted"><i class="fa fa-ok text-success"></i> 17:05</small>
+                  </div>
+                </div>
+                <div class="m-b">
+                  <a href="" class="pull-right thumb-sm avatar"><img src="img/a3.jpg" class="img-circle" alt="..."></a>
+                  <div class="m-r-xxl">
+                    <div class="pos-rlt wrapper bg-primary r r-2x">
+                      <span class="arrow right pull-up arrow-primary"></span>
+                      <p class="m-b-none">Нажав на кнопку «Написать реферат», вы лично создаете уникальный текст, причем именно от вашего нажатия на кнопку зависит, какой именно текст получится — таким образом, авторские права на реферат принадлежат только вам.</p>
+                    </div>
+                    <small class="text-muted">17:05</small>
+                  </div>
+                </div>
+              <div class="m-b chat-date text-center">
+                  <p>Понедельник 18 июля 2017</p>
+              </div>
+              <div class="m-b">
+                  <a href="" class="pull-left thumb-sm avatar"><img src="img/a2.jpg" alt="..."></a>
+                  <div class="m-l-xxl">
+                    <div class="pos-rlt wrapper b b-light r r-2x">
+                      <span class="arrow left pull-up"></span>
+                      <p class="m-b-none">Нажав на кнопку «Написать реферат», вы лично создаете уникальный текст, причем именно от вашего нажатия на кнопку зависит, какой именно текст получится — таким образом, авторские права на реферат принадлежат только вам.</p>
+                    </div>
+                    <small class="text-muted"><i class="fa fa-ok text-success"></i> 17:05</small>
+                  </div>
+                </div>
+                <div class="m-b">
+                  <a href="" class="pull-right thumb-sm avatar"><img src="img/a3.jpg" class="img-circle" alt="..."></a>
+                  <div class="m-r-xxl">
+                    <div class="pos-rlt wrapper bg-primary r r-2x">
+                      <span class="arrow right pull-up arrow-primary"></span>
+                      <p class="m-b-none">Нажав на кнопку «Написать реферат», вы лично создаете уникальный текст, причем именно от вашего нажатия на кнопку зависит, какой именно текст получится — таким образом, авторские права на реферат принадлежат только вам.</p>
+                    </div>
+                    <small class="text-muted">17:05</small>
+                  </div>
+                </div>
+              </div>
+              </div>
+              <footer class="panel-footer chat-footer">
+                <!-- chat form -->
+                <div>
+                  <a class="pull-left thumb-xs avatar"><img src="img/a3.jpg" class="img-circle" alt="..."></a>
+                  <form class="m-b-none m-l-xl">
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Сообщение...">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Отправить</button>
+                      </span>
+                    </div>
+                  </form>
+                </div>
+              </footer>
+              </div>
+             
+             
+             
+             
+             
+             
+             
+             
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /column -->
+
+  </div>
+<!-- /hbox layout -->
+
+
+
+
+
+	</div>
+  </div>
+  <!-- /content -->
+  
+  <!-- footer -->
+  <footer id="footer" class="app-footer" role="footer">
+    <div class="wrapper b-t bg-light">
+      <span class="pull-right">2.2.0 <a href ui-scroll="app" class="m-l-sm text-muted"><i class="fa fa-long-arrow-up"></i></a></span>
+      &copy; 2016 Copyright.
+    </div>
+  </footer>
+  <!-- / footer -->
+
+
+
+</div>
+
+<script src="../libs/jquery/jquery/dist/jquery.js"></script>
+<script src="../libs/jquery/bootstrap/dist/js/bootstrap.js"></script>
+<script src="js/ui-load.js"></script>
+<script src="js/ui-jp.config.js"></script>
+<script src="js/ui-jp.js"></script>
+<script src="js/ui-nav.js"></script>
+<script src="js/ui-toggle.js"></script>
+<script src="js/ui-client.js"></script>
+
+</body>
+</html>
