@@ -26,25 +26,25 @@
     <div class="wrapper text-center">
       <strong>Вход</strong>
     </div>
-    <form name="form" class="form-validation">
+    <form name="form" class="form-validation" active="/login" method="POST" accept-charset="utf-8" target="_self">
       <div class="text-danger wrapper text-center" ng-show="authError">
           
       </div>
       <div class="list-group list-group-sm">
         <div class="list-group-item">
-          <input type="email" placeholder="Логин" class="form-control no-border" ng-model="user.email" required>
+          <input type="email" name="login" placeholder="Логин" class="form-control no-border" ng-model="user.email" required>
         </div>
         <div class="list-group-item">
-           <input type="password" placeholder="Пароль" class="form-control no-border" ng-model="user.password" required>
+           <input type="password" name="password" placeholder="Пароль" class="form-control no-border" ng-model="user.password" required>
         </div>
       </div>
       <div class="checkbox m-b-md m-t-none">
-        <label class="i-checks">
-          <input type="checkbox" ng-model="agree" required><i></i> Запомнить меня
-        </label>
+        <!--<label class="i-checks">
+          <input type="checkbox" name="checkbox" ng-model="agree" required><i></i> Запомнить меня
+        </label>-->
       </div>
       <div class="m-t m-b"><a href="/html/forgot_password.html">Забыли пароль?</a></div>
-      <button type="submit" class="btn btn-lg btn-primary btn-block" ng-click="login()" ng-disabled='form.$invalid'>Вход</button>
+      <button type="submit" name="send" class="btn btn-lg btn-primary btn-block" ng-click="login()" ng-disabled='form.$invalid'>Вход</button>
     </form>
   </div>
 </div>

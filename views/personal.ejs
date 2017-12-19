@@ -2,7 +2,7 @@
 <html lang="en" class="">
 <head>
   <meta charset="utf-8" />
-  <title>Курсы</title>
+  <title>Пользователи</title>
   <meta name="description" content="app, web app, responsive, responsive layout, admin, admin panel, admin dashboard, flat, flat ui, ui kit, AngularJS, ui route, charts, widgets, components" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
   <link rel="stylesheet" href="../libs/assets/animate.css/animate.css" type="text/css" />
@@ -15,74 +15,15 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="knomarystyle.css">
   <script src="js/modernizr.custom.js"></script>
+  
+  <script src="/js/formToAdd.js" defer></script>
 
 </head>
 <body>
 <div class="app app-header-fixed ">
 	
-
-	
+	<%- include decorate/header.ejs %>
   
-    <!-- header -->
-  <header id="header" class="app-header navbar" role="menu">
-      <!-- navbar header -->
-      <div class="navbar-header bg-dark">
-        <button class="pull-right visible-xs dk" ui-toggle-class="show" target=".navbar-collapse">
-          <i class="glyphicon glyphicon-cog"></i>
-        </button>
-        <button class="pull-right visible-xs" ui-toggle-class="off-screen" target=".app-aside" ui-scroll="app">
-          <i class="glyphicon glyphicon-align-justify"></i>
-        </button>
-        <!-- brand -->
-        <a href="#/" class="navbar-brand text-lt">
-          <span class="hidden-folded m-l-xs">Logo</span>
-        </a>
-        <!-- / brand -->
-      </div>
-      <!-- / navbar header -->
-
-      <!-- navbar collapse -->
-      <div class="collapse pos-rlt navbar-collapse box-shadow bg-white-only">
-        <!-- buttons -->
-        <div class="nav navbar-nav hidden-xs">
-          <a href="#" class="btn no-shadow navbar-btn" ui-toggle-class="app-aside-folded" target=".app">
-            <i class="fa fa-dedent fa-fw text"></i>
-            <i class="fa fa-indent fa-fw text-active"></i>
-          </a>
-        </div>
-        <!-- / buttons -->
-
- 
-
-        <!-- nabar right -->
-       <ul class="nav navbar-nav navbar-right">
-     
-     
-          <li class="dropdown">
-            <a href="#" data-toggle="dropdown" class="dropdown-toggle clear" data-toggle="dropdown">
-                           <span class="hidden-sm hidden-md">Администратор</span> <b class="caret"></b>
-            </a>
-            <!-- dropdown -->
-            <ul class="dropdown-menu animated fadeInUp w">
-              <li>
-                <a href="student_cabinet.html">Профиль</a>
-              </li>
-              <li class="divider"></li>
-              <li>
-                <a href="index.html">Выйти</a>
-              </li>
-            </ul>
-            <!-- / dropdown -->
-          </li>
-        </ul>
-        <!-- / navbar right -->
-      </div>
-      <!-- / navbar collapse -->
-  </header>
-  <!-- / header -->
-
-
-    <!-- aside -->
   <aside id="aside" class="app-aside hidden-xs bg-dark">
       <div class="aside-wrap">
         <div class="navi-wrap">
@@ -121,15 +62,15 @@
           <!-- nav -->
           <nav ui-nav class="navi clearfix">
             <ul class="nav">
-              <li>
-                <a href="#">
+              <li class="active">
+                <a href="#" onclick="event.stopPropagation()">
                   <i class="icon-user icon"></i>
-                  <span>Личный кабинет</span>
+                  <span onclick="event.stopPropagation()">Личный кабинет</span>
                 </a>
               </li>
                             
                <li>
-                <a href="#">
+                <a href="/edit_courses">
                   <i class="glyphicon glyphicon-file icon"></i>
                   <span>Каталог курсов</span>
                 </a>
@@ -154,7 +95,7 @@
          <div class="col-xs-12">
            <div class="col-xs-12">
              <div class="col-xs-12">
-                <h1 class="m-n font-thin h3">Курсы</h1>
+                <h1 class="m-n font-thin h3">Пользователи</h1>
 
              </div>
            </div>
@@ -166,6 +107,17 @@
 <div class="wrapper-md">
   <div class="panel panel-default">
     <div>
+      
+      <% if ( errMessage ) {%>
+        <div id="errorBlock"  style="min-height:10px; width:98%; border:2px solid #222; margin:1%"> <%= errMessage %> </div>
+      <% } %>
+      <% if ( save ) {%>
+        <div id="ifSaveBlock" style="min-height:10px; width:98%; border:2px solid #222; margin:1%"> Save! </div>
+      <% } %>
+      <% if ( deleted ) {%>
+        <div id="ifSaveBlock" style="min-height:10px; width:98%; border:2px solid #222; margin:1%"> User deleted! </div>
+      <% } %>
+      
       <table class="table teachers-table" ui-jq="footable" ui-options='{
         "paging": {
           "enabled": true
@@ -179,48 +131,36 @@
         <tbody>
 	        
 	      <tr>
-            <th style="padding-left: 30px;">Название курса</th>
-            <th  class="text-center">Количество элементов</th>
-           
-            <th  class="text-center">Удалить</th>
-            <th  class="text-center">Редактировать</th>
+            <th style="padding-left: 30px;">Имя</th>
+            <th>Фамилия</th>
+            <th>E-mail</th>
+            <th>Пройдено курсов</th>
+            <th>Пройдено слайдов</th>
+            <th>Удалить</th>
+            <th>Редактировать</th>
           </tr>
 	        
+	        <% for ( var i = 0; i < users.length; i++ )  { %>
+            <% if ( !users[i].admin ) { %>
+              <tr data-expanded="true" >
+                <td name="name"><%= users[i].name    %></td>  
+                <td name="surname"><%= users[i].surname %></td>
+                <td name="Email"><%= users[i].Email   %></td>
+                <td><%= users[i].passedCourses %></td>
+                <td><%= users[i].passedSlide   %></td>
+                <td onclick="deleteUser(event)"><a href="#"><i data-modal="modal-9" class="fa md-trigger fa-times"   aria-hidden="true"></i></a></td>
+                <td onclick="loadToForm(event)"><a href="#"><i data-modal="modal-10" class="fa md-trigger fa-pencil" aria-hidden="true"></i></a></td>
+                <td name="_id" style="display:none"><%= users[i]._id %></td>
+              </th>
+            <% }%>
+	        <% } %>
 	        
-          <tr data-expanded="true" >
-	        <td>Менеджмент</td>  
-            <td class="text-center">6</td>
-           
-            <td class="text-center"><a href="#"><i data-modal="modal-9" class="fa md-trigger fa-times" aria-hidden="true"></i></a></td>
-            <td class="text-center"><a href="#"><i data-modal="modal-10" class="fa md-trigger fa-pencil" aria-hidden="true"></i></a></td>
-          </tr>
-          
-               
-          <tr data-expanded="true" >
-	        <td>Управление огранизацией</td>  
-            <td class="text-center">12</td>
-           
-            <td class="text-center"><a href="#"><i data-modal="modal-9" class="fa md-trigger fa-times" aria-hidden="true"></i></a></td>
-            <td class="text-center"><a href="#"><i data-modal="modal-10" class="fa md-trigger fa-pencil" aria-hidden="true"></i></a></td>
-          </tr>
-          
-               <tr data-expanded="true" >
-	        <td>Лидерство</td>  
-            <td class="text-center">4</td>
-           
-            <td class="text-center"><a href="#"><i data-modal="modal-9" class="fa md-trigger fa-times" aria-hidden="true"></i></a></td>
-            <td class="text-center"><a href="#"><i data-modal="modal-10" class="fa md-trigger fa-pencil" aria-hidden="true"></i></a></td>
-          </tr>
-          
-         
-          
-          
         </tbody>
       </table>
     </div>
   </div>
-  
-   <div id="add-users" class="btn md-trigger m-b-xs w-xs btn-default addbluecolor" data-modal="modal-8">Добавить курс</div>
+     <div id="import-users" class="btn md-trigger m-b-xs w-xs btn-default addbluecolor" data-modal="modal-9">Импортировать пользователей</div>
+   <div id="add-users" class="btn md-trigger m-b-xs w-xs btn-default addbluecolor" data-modal="modal-8">Добавить пользователя</div>
    <div class="clear"></div>
   
  
@@ -233,7 +173,18 @@
 			
 			<!-- Контент-->
 			
-
+	<div class="panel panel-default" id="new-teacher">
+        <div class="panel-heading font-bold import-users-title">Импортировать пользователей</div>
+        <div class="panel-body">
+	        <p class="exampletext">
+	        Данная функция позволяет выполнить массовый импорт пользователей. Импорт выполняется в формате .csv <br><br> В файле должны присутствовать следующие колонки: Имя, Фамилия, E-mail, Пароль. <br><br> Скачайте <a href="example.csv">пример файла</a> для соблюдения точного соответствия формату.
+	        </p>
+          <form role="form" method="POST" action="/import" enctype="multipart/form-data">
+              <input type="file" name="users" accept=".csv" >
+              <button type="submit" class="btn btn-sm btn-primary button-users-add">Выберите файл</button>
+          </form>
+        </div>
+      </div>
 					<!-- Контент-->
 			
 			
@@ -260,28 +211,38 @@
    	
 			<div class="md-modal md-effect-8" id="modal-8">
 			<div class="md-content">
-			<button class="md-close"></button>
+			<button class="md-close" onclick="document.getElementById('formAddPerson').reset()"></button>
 			
 			<!-- Контент-->
 			
 	<div class="panel panel-default" id="new-teacher">
-        <div class="panel-heading font-bold">Новый курс</div>
+        <div class="panel-heading font-bold">Новый пользователь</div>
         <div class="panel-body">
-          <form role="form">
+          
+          <form role="form" name="addPerson" id="formAddPerson" action="/addPerson" method="POST" >
             <div class="form-group">
          
-              <input type="text" class="form-control" placeholder="Название курса">
+              <input type="text" class="form-control" placeholder="Имя" name="name">
             </div>
-         
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Фамилия" name="surname">
+            </div>
             
-           
-                    
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="E-mail" name="Email" >
+            </div>
             
+            <div class="typepassowd">
+	            <div class="form-group">
+              <input type="password" class="form-control" placeholder="Пароль" name="password1">
+            </div>
             
-           
-            
-            
-<button type="submit" class="btn btn-sm btn-primary">Добавить</button>
+            <div class="form-group">
+ 
+              <input type="password" class="form-control" placeholder="Подтвердите пароль" name="password2">
+            </div>
+            </div>       
+            <button type="submit" style="display:inline-block" class="btn btn-sm btn-primary">Добавить</button>
           </form>
         </div>
       </div>
@@ -363,24 +324,51 @@
 			<!-- Контент-->
 			
 	<div class="panel panel-default" id="new-teacher">
-        <div class="panel-heading font-bold">Редактировать курс</div>
+        <div class="panel-heading font-bold">Редактировать пользователя</div>
         <div class="panel-body">
-          <form role="form">
+          <form role="form" id="formEditUser" action="/editUser" method="POST">
             <div class="form-group">
          
-              <input type="text" class="form-control" placeholder="Название курса">
+              <input type="text" class="form-control" placeholder="Имя" name="name">
             </div>
             <div class="form-group">
  
-              <input type="text" class="form-control" placeholder="Количество элементов">
+              <input type="text" class="form-control" placeholder="Фамилия" name="surname">
             </div>
             
 
     
-
+            <div class="form-group">
+ 
+              <input type="email" class="form-control" placeholder="E-mail" name="Email">
+            </div>
             
             
-<button type="submit" class="btn btn-sm btn-primary">Сохранить</button>
+            
+            <div class="typepassowd">
+	            
+	            
+	              <div class="form-group">
+ 
+              <input type="password" class="form-control" placeholder="Пароль" name="password1">
+            </div>
+            
+            <div class="form-group">
+ 
+              <input type="password" class="form-control" placeholder="Подтвердите пароль" name="password2">
+              
+              <!--The user ID for the update does not create a new user-->
+              <!--No delete this element!-->
+              <input style="display:none" name="_id">
+              
+            </div>
+	            
+	            
+	            
+            </div>
+            
+            
+<button type="submit" class="btn btn-sm btn-primary" name="send">Сохранить</button>
           </form>
         </div>
       </div>

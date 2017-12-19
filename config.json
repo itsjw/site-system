@@ -1,0 +1,15 @@
+{
+    "db": {
+        "url": "mongodb://127.0.0.1:27017/data",
+        
+        "options": {
+            "useMongoClient": true,
+            "reconnectInterval": 500,
+            "poolSize": 5,
+            "bufferMaxEntries": true,
+            
+            "user": "",
+            "pass": ""
+        }
+    }
+}
