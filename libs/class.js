@@ -3,11 +3,15 @@ const mongoose = require("mongoose"),
     
     
 
-
+const User = getUserClass(),
+    Step   = getStepClass(),
+    Course = getCourseClass();
 
 
 module.exports = {
-    User: getUserClass()
+    User: User,
+    Course: Course,
+    Step: Step
 };
 
 
@@ -62,7 +66,65 @@ function getCourseClass () {
     var schema = new mongoose.Schema({
         name: {
             type: String,
-            
+            required: true
+        },
+        
+        steps: {
+            type: Array,
+            default: []
         }
     });
+    
+    schema.methods.delete = function (index) {
+        //if index > lenght
+        if ( this.steps.length >= index.length ) {
+            return new TypeError("steps.length >= index.length");
+        }
+        
+        // Deleted this step of DataBase
+        Step.findById((this.steps[index]), function (err, step) {
+            if (err) {
+                console.error(err);
+            }
+            if (step) {
+                step.remove(function (err) {
+                    if (err) {
+                        console.error(err);
+                    }
+                });
+            }
+        });
+        
+        // Delete of array steps
+        this.steps.slice(index, 1);
+    };
+    
+    return mongoose.model('Course', schema);
+}
+
+function getStepClass () {
+    var schema = new mongoose.Schema({
+        name: {
+            type: String,
+            required: true
+        },
+        
+        type: {
+            type: String,
+            required: true,
+            enum: ["video", "step"]
+        },
+        
+        video: {
+            type: String,
+            default: ""
+        },
+        
+        step: {
+            type: String,
+            default: ""
+        }
+    });
+    
+    return mongoose.model('Step', schema);
 }

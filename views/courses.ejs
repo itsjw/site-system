@@ -15,7 +15,8 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="knomarystyle.css">
   <script src="js/modernizr.custom.js"></script>
-
+  
+  <script src="/js/deleteCourse.js" defer></script>
 </head>
 <body>
 <div class="app app-header-fixed ">
@@ -112,6 +113,17 @@
 <div class="wrapper-md">
   <div class="panel panel-default">
     <div>
+      
+      <% if ( errMessage ) {%>
+        <div id="errorBlock"  style="min-height:10px; width:98%; border:2px solid #222; margin:1%"> <%= errMessage %> </div>
+      <% } %>
+      <% if ( save ) {%>
+        <div id="ifSaveBlock" style="min-height:10px; width:98%; border:2px solid #222; margin:1%"> Save! </div>
+      <% } %>
+      <% if ( deleted ) {%>
+        <div id="ifDeletedBlock" style="min-height:10px; width:98%; border:2px solid #222; margin:1%"> Courses deleted! </div>
+      <% } %>
+      
       <table class="table teachers-table" ui-jq="footable" ui-options='{
         "paging": {
           "enabled": true
@@ -132,35 +144,16 @@
             <th  class="text-center">Редактировать</th>
           </tr>
 	        
-	        
-          <tr data-expanded="true" >
-	        <td>Менеджмент</td>  
-            <td class="text-center">6</td>
-           
-            <td class="text-center"><a href="#"><i data-modal="modal-9" class="fa md-trigger fa-times" aria-hidden="true"></i></a></td>
-            <td class="text-center"><a href="#"><i data-modal="modal-10" class="fa md-trigger fa-pencil" aria-hidden="true"></i></a></td>
-          </tr>
-          
+	        <% for ( var i = 0; i < courses.length; i++) { %>
+              <tr data-expanded="true" id="<%= courses[i]._id %>">
+	              <td> <%= courses[i].name %> </td>  
+                <td class="text-center"> <%= courses[i].steps.length %> </td>
                
-          <tr data-expanded="true" >
-	        <td>Управление огранизацией</td>  
-            <td class="text-center">12</td>
-           
-            <td class="text-center"><a href="#"><i data-modal="modal-9" class="fa md-trigger fa-times" aria-hidden="true"></i></a></td>
-            <td class="text-center"><a href="#"><i data-modal="modal-10" class="fa md-trigger fa-pencil" aria-hidden="true"></i></a></td>
-          </tr>
-          
-               <tr data-expanded="true" >
-	        <td>Лидерство</td>  
-            <td class="text-center">4</td>
-           
-            <td class="text-center"><a href="#"><i data-modal="modal-9" class="fa md-trigger fa-times" aria-hidden="true"></i></a></td>
-            <td class="text-center"><a href="#"><i data-modal="modal-10" class="fa md-trigger fa-pencil" aria-hidden="true"></i></a></td>
-          </tr>
-          
-         
-          
-          
+                <td class="text-center" onclick="deleteCourse(event)"><a href="#"><i data-modal="modal-9" class="fa md-trigger fa-times" aria-hidden="true"></i></a></td>
+                <td class="text-center" onclick="  editCourse(event)"><a href="#"><i data-modal="modal-10" class="fa md-trigger fa-pencil" aria-hidden="true"></i></a></td>
+              </tr>
+	        <% } %>
+	        
         </tbody>
       </table>
     </div>
@@ -213,21 +206,11 @@
 	<div class="panel panel-default" id="new-teacher">
         <div class="panel-heading font-bold">Новый курс</div>
         <div class="panel-body">
-          <form role="form">
-            <div class="form-group">
-         
-              <input type="text" class="form-control" placeholder="Название курса">
+          <form role="form" action="/addCourse" method="POST">
+            <div class="form-group" >
+              <input type="text" class="form-control" placeholder="Название курса" name="name">
             </div>
-         
-            
-           
-                    
-            
-            
-           
-            
-            
-<button type="submit" class="btn btn-sm btn-primary">Добавить</button>
+            <button type="submit" class="btn btn-sm btn-primary">Добавить</button>
           </form>
         </div>
       </div>
