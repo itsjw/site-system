@@ -1,5 +1,6 @@
 const fs = require("fs"),
-    async = require("async");
+    async = require("async"),
+    textErr = require("../errorText.json").errorText;
 
 const User =require("./class.js").User;
 
@@ -21,13 +22,16 @@ module.exports = function (app, upload) {
             var user = new User(req.body);
             user.save(function (err) {
                 if ( err ) {
-                    return res.redirect("/personal?err=Error while creating");
+                    console.error(err);
+                    return res.redirect("/personal?err=" + textErr.CreateError );
                 }
+                console.log("Add person");
+                console.log(user);
                 
                 res.redirect("/personal?save=Ok");
             });
         } else {
-            res.redirect("/personal?err=Passwords do not match");
+            res.redirect("/personal?err=" + textErr.PasswordsError);
         }
     });
     
@@ -44,13 +48,13 @@ module.exports = function (app, upload) {
         User.findById(req.body._id, function (err, user) {
             if ( err ) {
                 console.error(err);
-                return res.redirect("/personal?err=Error connect to DB<br>Origin:" + err.toString());
+                return res.redirect("/personal?err=" + textErr.FindError);
             }
             if ( !user ) {
-                return res.redirect("/personal?err=Error finding user");
+                return res.redirect("/personal?err=" + textErr.FindError);
             }
             if ( req.body.password1 != req.body.password2 ) {
-                return res.redirect("/personal?err=Passwords do not match");
+                return res.redirect("/personal?err=" + textErr.PasswordsError);
             }
             
             var data = {};
@@ -65,9 +69,16 @@ module.exports = function (app, upload) {
                 data.password = req.body.password1;
             }
             
+            console.log("Edit user");
+            console.log(user);
+            console.log(req.body);
+            
             user.set(data);
             user.save( function (err) {
-                res.redirect( (err)?"/personal?err=Error saving":"/personal?save=Ok" );
+                if (err) {
+                    console.error(err);
+                }
+                res.redirect( (err)?"/personal?err=" + textErr.SavingError : "/personal?save=Ok" );
             } );
         });
     });
@@ -87,16 +98,20 @@ module.exports = function (app, upload) {
         
         User.findById(req.query.id, function (err, user) {
             if ( err ) {
-                return res.redirect("/personal?err=Error connect to DB<br>Origin:" + err.toString());
+                console.error(err);
+                return res.redirect("/personal?err=" + textErr.FindError);
             }
             if ( !user ) {
-                return res.redirect("/personal?err=Error finding user");
+                return res.redirect("/personal?err=" + textErr.FindError);
             }
             
             user.remove(function (err) {
                 if ( err ) {
-                    return res.redirect("/personal?err=Error while delete");
+                    console.error(err);
+                    return res.redirect("/personal?err=" + textErr.DeletedError);
                 }
+                
+                console.log("Deleted user id:%s", user._id);
                 
                 res.redirect("/personal?deleted=Ok");
             });
@@ -112,20 +127,24 @@ module.exports = function (app, upload) {
             path: "/personal"
         });
         
-        fs.readFile(req.file.path, "utf-8", function(err, data) {
+        fs.readFile("../" + req.file.path, "utf-8", function(err, data) {
             if ( err ) {
-                return res.redirect("/personal?err=Error in file read");
+                console.error(err);
+                return res.redirect("/personal?err=" + textErr.NotValidFileError);
             }
             
             
             const usersLine = data.split("||"),
                 order = ["name", "surname", "Email", "password"];
             
+            console.log("Import users:");
+            console.log(usersLine);
+            
             var notSaveUserCount = 0;
             
             async.concat(usersLine, parseAndSaveUser, function () {
                 if ( notSaveUserCount ) {
-                    return res.redirect("/personal?err=" + notSaveUserCount + " user not save!");
+                    return res.redirect("/personal?err=User №" + notSaveUserCount + " not save");
                 }
                 return res.redirect("/personal?save=Ok");
             });
@@ -150,11 +169,13 @@ module.exports = function (app, upload) {
                         notSaveUserCount++;
                     }
                     
+                    console.log("Import user save id:%s", user._id);
+                    
                     return callback();
                 });
             }
             
-            fs.unlink(req.file.path, function (err) {
+            fs.unlink("../" + req.file.path, function (err) {
                 if (err) {
                     console.error(err);
                 }

@@ -1,5 +1,6 @@
 const async = require("async"),
-    fs = require("fs");
+    fs = require("fs"),
+    textErr = require("../errorText.json").errorText;
 
 const { Course, Step } = require("./class.js");
 
@@ -21,9 +22,10 @@ module.exports = function (app, upload, dirname) {
         
         course.save(function (err) {
             if (err) {
-                return res.redirect("/edit_courses?err=Error saving <br> Origin:" + err.toString());
+                console.error(err);
+                return res.redirect("/edit_courses?err=" + textErr.CreateError );
             }
-            
+            console.log("Add course name:%s id:" + course._id, req.body.name);
             res.redirect("/edit_courses?save=Ok");
         });
     });
@@ -43,13 +45,43 @@ module.exports = function (app, upload, dirname) {
         
         Course.findById(req.query.id, function (err, course) {
             if ( err || !course ) {
-                return res.redirect("/edit_courses?err=Error finder");
+                console.error(err);
+                return res.redirect("/edit_courses?err=" + textErr.FindError );
             }
             
+            const steps = course.steps();
             course.remove(function (err) {
                 if (err) {
-                    return res.redirect("/edit_courses?err=Error deleting");
+                    console.error(err);
+                    return res.redirect("/edit_courses?err=" + textErr.DeletedError);
                 }
+                
+                console.log("Deleted course id:%s", course._id);
+                
+                for ( var i = 0; i < steps.length; i++ ) {
+                    Step.findById(steps[i], function (err, step) {
+                        if ( err ) {
+                            console.error(err);
+                            return console.error(err);
+                        }
+                        
+                        if ( step.type == "video") {
+                            fs.unlink("../public/" + step.video, function(err) {
+                                if ( err ) {
+                                    console.error(err);
+                                }
+                            });
+                        }
+                        
+                        step.remove(function (err) {
+                            if (err) {
+                                console.error(err);
+                            }
+                            console.log("deleted course id:" + course._id + " ;  step id:%s", step._id);
+                        });
+                    });
+                }
+                
                 res.redirect("/edit_courses?deleted=Ok");
             });
         });
@@ -91,7 +123,7 @@ module.exports = function (app, upload, dirname) {
         
         Course.findById(req.params.courseId, function (err, course) {
             if ( err || !course ) {
-                return res.redirect("/edit_course/" + req.params.courseId + "?err=Error connect to database");
+                return res.redirect("/edit_course/" + req.params.courseId + "?err=" + textErr.FindError);
             }
             
             var step = new Step({
@@ -103,16 +135,25 @@ module.exports = function (app, upload, dirname) {
             step.save(function (err) {
                 if (err) {
                     console.log(err);
-                    return res.redirect("/edit_course/" + req.params.courseId + "?err=Step saving error");
+                    return res.redirect("/edit_course/" + req.params.courseId + "?err=" + textErr.SavingError);
                 }
                 
                 course.steps.push(step._id);
                 
                 course.save(function (err) {
-                    console.log(course.steps);
                     if (err) {
-                        return res.redirect("/edit_course/" + req.params.courseId + "?err=Step saving error");
+                        console.error(err);
+                        
+                        step.remove(function (err) {
+                            if (err) {
+                                return console.error(err);
+                            }
+                            console.log("Deleted step id:%s  >> dont save course id:" + course._id, step._id);
+                        });
+                        
+                        return res.redirect("/edit_course/" + req.params.courseId + "?err=" + textErr.SavingError);
                     }
+                    console.log("Add step(id:" + step._id + ") in course id:%s", course._id);
                     return res.redirect("/edit_course/" + req.params.courseId + "?save=Ok");
                 });
             });
@@ -174,13 +215,15 @@ module.exports = function (app, upload, dirname) {
             });
             
             if (err) {
-                return res.redirect("/edit_course/" + req.params.courseId + "?err=Error copying file ");
+                console.error(err);
+                return res.redirect("/edit_course/" + req.params.courseId + "?err=" + textErr.CopyFileError);
             }
             
             
             Course.findById( req.params.courseId, function (err, course) {
                 if ( err || !course ) {
-                    return res.redirect("/edit_course/" + req.params.courseId + "?err=Error connect to database");
+                    console.error(err);
+                    return res.redirect("/edit_course/" + req.params.courseId + "?err=" + textErr.FindError);
                 }
                 
                 var step = new Step({
@@ -191,17 +234,37 @@ module.exports = function (app, upload, dirname) {
                 
                 step.save(function (err) {
                     if ( err ) {
-                        return res.redirect("/edit_course/" + req.params.courseId + "?err=Step saving error");
+                        console.error(err);
+                        
+                        fs.unlink("../public/" + step.video, function(err) {
+                            if ( err ) {
+                                console.error(err);
+                            }
+                        });
+                        
+                        return res.redirect("/edit_course/" + req.params.courseId + "?err=" + textErr.SavingError);
                     }
                     
-                    
-                    course.steps.push(step._id);
-                    
-                    course.save(function (err) {
-                        if (err) {
-                            return res.redirect("/edit_course/" + req.params.courseId + "?err=Step saving error");
+                    /// if type === video 
+                    Step.findById(course.steps[0], function (err, stepN1) {
+                        if ( err ) {
+                            console.error(err);
                         }
-                        return res.redirect("/edit_course/" + req.params.courseId + "?save=Ok");
+                        
+                        if ( stepN1 && stepN1.type == "video") {
+                            course.steps[0] = step._id;
+                        } else {
+                            course.steps.splice(0, 0, step);
+                        }
+                        
+                        course.save(function (err) {
+                            if (err) {
+                                console.error(err);
+                                return res.redirect("/edit_course/" + req.params.courseId + "?err=" + textErr.SavingError);
+                            }
+                            console.log("Add step(video) id%s in course id:" + course._id, step._id);
+                            return res.redirect("/edit_course/" + req.params.courseId + "?save=Ok");
+                        });
                     });
                     
                 });
@@ -222,29 +285,46 @@ module.exports = function (app, upload, dirname) {
         
         Course.findById(req.body.courseId, function (err, course) {
             if (err) {
-                return res.redirect("/edit_course/" + req.params.courseId + "?err=Error connect to database");
+                console.error(err);
+                return res.redirect("/edit_course/" + req.params.courseId + "?err=" + textErr.FindError);
             }
             Step.findById(req.body._id, function (err, step) {
                 var index = course.steps.findIndex(function (value) {
                     return req.body._id == value;
                 });
                 if (err) {
+                    console.error(err);
                     course.steps.splice(index, 1);
-                    course.steps.splice(+req.body.position || index, 0, req.body._id);
+                    course.steps.splice( ((+req.body.position > 0)?+req.body.position : 1 ) || index, 0, req.body._id);
                     return res.redirect("/edit_course/" + req.body.courseId + "?err=Could not rename");
                 } 
+                
+                console.log("\n");
+                console.log("Start update course id:%s", course._id);
+                console.log("Now steps:" + JSON.stringify(course.steps));
+                console.log(req.body);
+                console.log("\n");
+                
                 step.name = req.body.name;
-                console.log(course.steps);
                 course.steps.splice(index, 1);
-                console.log(course.steps);
-                course.steps.splice(+req.body.position || index, 0, req.body._id);
-                console.log(course.steps);
+                course.steps.splice( ((+req.body.position > 0)?+req.body.position : 1 ) || index, 0, req.body._id);
                 
                 step.save(function (err) {
-                    course.save(function (err2) {
-                        if (err || err2) {
-                            return res.redirect("/edit_course/" + req.body.courseId + "?err=Failed to save");
+                    if (err) {
+                        console.error(err);
+                        return res.redirect("/edit_course/" + req.body.courseId + "?err=" + textErr.SavingError);
+                    }
+                    course.save(function (err) {
+                        if (err) {
+                            console.error(err);
+                            return res.redirect("/edit_course/" + req.body.courseId + "?err=" + textErr.SavingError);
                         }
+                        
+                        console.log("\n");
+                        console.log("End update course id:%s", course._id);
+                        console.log("Now steps:" + JSON.stringify(course.steps));
+                        console.log("\n");
+                        
                         return res.redirect("/edit_course/" + req.body.courseId + "?save=Ok");
                     });
                 });
@@ -269,11 +349,13 @@ module.exports = function (app, upload, dirname) {
         Course.findById(req.query.courseId, function (err, course) {
             if ( err ) {
                 console.log(err);
-                return res.redirect("/edit_course/" + req.query.courseId + "?err=Error connect to database");
+                return res.redirect("/edit_course/" + req.query.courseId + "?err=" + textErr.FindError);
             }
+            
             Step.findById(req.query.stepId, function(err, step) {
                 if ( err ) {
-                    return res.redirect("/edit_course/" + req.query.courseId + "?err=Finder error");
+                    console.error(err);
+                    return res.redirect("/edit_course/" + req.query.courseId + "?err=" + textErr.FindError);
                 }
                 
                 var index = course.steps.findIndex(function (value) {
@@ -283,7 +365,7 @@ module.exports = function (app, upload, dirname) {
                 course.steps.splice(index, 1);
                 
                 if ( step.type == "video" ) {
-                    fs.unlink("public/" + step.video, function(err) {
+                    fs.unlink("../public/" + step.video, function(err) {
                         if ( err ) {
                             console.error(err);
                         }
@@ -292,13 +374,17 @@ module.exports = function (app, upload, dirname) {
                 
                 course.save(function (err) {
                     if (err) {
-                        return res.redirect("/edit_course/" + req.query.courseId + "?err=Saving error");
+                        console.error(err);
+                        return res.redirect("/edit_course/" + req.query.courseId + "?err=" + textErr.SavingError);
                     }
                     step.remove(function (err) {
                         if (err) {
                             console.log(err);
                         }
                     });
+                    
+                    console.log("Deleted step id:%s in course id:" + course._id, step._id);
+                    
                     return res.redirect("/edit_course/" + req.query.courseId + "?deleted=Ok");
                 });
             });

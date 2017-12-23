@@ -1,0 +1,38 @@
+<nav ui-nav class="navi clearfix">
+<ul class="nav">
+
+<% for ( var i = 0; i < courses.length; i++ ) { %>
+    <% var courseRender = courses[i] %>
+    <% if (course) {  %>
+        <% if ( course._id.toString() == courses[i]._id.toString() ) { courseNumber = i; }  %>
+    <% } %>
+    <li class="<%= (courseNumber == i)?"active":"" %>">
+      <a href class="auto">
+        <span class="pull-right text-muted">
+          <i class="fa fa-fw fa-angle-right text"></i>
+          <i class="fa fa-fw fa-angle-down text-active"></i>
+        </span>
+        <i class="glyphicon glyphicon-file icon"></i>
+        <span>Курс <%= i + 1 %>: <%= courseRender.name %></span>
+        
+      </a>
+      <ul class="nav nav-sub dk no-padding-li">
+        <% for (var j = 0; j < courseRender.stepsData.length; j++) { %>
+            <%
+                var result = user.slides.find(function (value) {
+                  return value == courseRender.stepsData[j]._id.toString();
+                });
+            %>
+            <li class="<%= (result || courseRender.stepsData[j].type == "video" )?"active":""  %>">
+              <a href="/choose_course/<%= courseRender._id %>/step/<%= j %>">
+                <span><%= (courseRender.stepsData[j].type == "video")?"Просмотр видео":
+                  (courseRender.stepsData[j].type == "step")?"Шаг":"Неопределенно, сбой на стороне сервера" %> <%= (j == 0)?"":j %>
+                  </span>
+              </a>
+            </li>
+        <% } %>
+      </ul>
+    </li>
+<% }%>
+</ul>
+</nav>

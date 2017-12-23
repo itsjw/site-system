@@ -146,8 +146,28 @@
                 <td name="name"><%= users[i].name    %></td>  
                 <td name="surname"><%= users[i].surname %></td>
                 <td name="Email"><%= users[i].Email   %></td>
-                <td><%= users[i].passedCourses %></td>
-                <td><%= users[i].passedSlide   %></td>
+                <%
+                  var count = 0;
+                  for (var b = 0; b < users[i].courses.length; b++) {
+                    var faile = false;
+                    var course = courses.find(function (value) {
+                      return value._id.toString() == users[i].courses[b].courseId.toString();
+                    });
+                    for ( var k = 1; k < course.steps.length; k++ ) {
+                      if (!(~"courseId _id __v".indexOf())) {
+                        if (!users[i].courses[b][course.steps[k]]) {
+                          faile = true
+                          break;
+                        }
+                      }
+                    }
+                    if ( !faile ) {
+                      count++;
+                    }
+                  }
+                %>
+                <td><%= count %></td>
+                <td><%= users[i].slides.length %></td>
                 <td onclick="deleteUser(event)"><a href="#"><i data-modal="modal-9" class="fa md-trigger fa-times"   aria-hidden="true"></i></a></td>
                 <td onclick="loadToForm(event)"><a href="#"><i data-modal="modal-10" class="fa md-trigger fa-pencil" aria-hidden="true"></i></a></td>
                 <td name="_id" style="display:none"><%= users[i]._id %></td>

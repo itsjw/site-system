@@ -49,14 +49,14 @@ function getUserClass() {
         
         
         // Progres data
-        passedCourses : {
-            type: Number,
-            default: 0
+        courses : {
+            type: [mongoose.Schema.Types.Mixed]
         },
-        passedSlide   : {
-            type: Number,
-            default: 0
+        slides   : {
+            type: [mongoose.Schema.Types.Mixed]
         }
+        
+        
     });
     
     return mongoose.model('User', schema);

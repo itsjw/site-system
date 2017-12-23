@@ -1,11 +1,13 @@
 const hash = require("password-hash"),
-    fs = require("fs");
+    fs = require("fs"),
+    optipns = require("../config.json");
 
 const User = require("./class.js").User;
 
 module.exports = function (app) {
     app.use("/", function (req, res, next) {
         
+        // passport
         req.passport = {};
         req.passport.admin = (function (req, res, next) {
             if ( req.user ) {
@@ -19,6 +21,14 @@ module.exports = function (app) {
         req.passport.client = (function (req, res, next) {
             return true;
         }).bind( this, req, res);
+        
+        // if fre login/ next path not used user data
+        var freeLogin = optipns.login.loginFree.find(function (value) {
+            return req.url.indexOf(value) == 0;
+        });
+        if (freeLogin) {
+            return next();
+        }
         
         
         if ( req.cookies.password && req.cookies.login ) {
@@ -86,6 +96,8 @@ module.exports = function (app) {
     app.get("/startPage", function (req, res, next) {
         if ( req.user ) {
             res.redirect( ( req.user.admin )?"/personal":"/choose_course" );
+        } else {
+            res.redirect( "/login" );
         }
     });
 };

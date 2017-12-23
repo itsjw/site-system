@@ -1,0 +1,8 @@
+Step #1
+  Run mongodb: 
+    >>mongod --bind_ip="127.0.0.1" --nojournal --dbpath="path/to/data"
+    One use "--repair", only if database not run of
+
+Step #2
+  Run server.js
+  >> node path/to/server.js

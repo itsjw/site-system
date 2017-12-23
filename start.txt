@@ -1,0 +1,30 @@
+----------------------------------------- Getting Started on Linux Servers -----------------------------------------
+install node.js
+  >>sudo apt-get update
+  >>sudo apt-get install nodejs
+  >>sudo apt-get install npm
+
+Install the app with a git
+  git copy https://github.com/Ryslan342/site-system.git
+    
+File system, location dir
+  main dir/
+    --libs/
+    --public/
+    --views/
+    --config.json
+    --errorText.json
+    --manifest.json
+    --server.json
+  
+  Add paths:
+    --data/
+    --log/
+    --uploads/
+    --public/video/
+
+Installing the mongodb database
+  see https://docs.mongodb.com/manual/tutorial/install-mongodb-on-linux/
+
+Install modules of package.json "dependencies"
+  >> npm install namemodules

@@ -34,38 +34,9 @@
             <div class="line dk hidden-folded"></div>
           </div>
           <!-- / user -->
-
+          <% var courseNumber = -1, course = 0; %>
           <!-- nav -->
-          <nav ui-nav class="navi clearfix">
-            <ul class="nav">
-            
-            <% for ( var i = 0; i < courses.length; i++ ) { %>
-                <% var course = courses[i] %>
-                <li>
-                  <a href class="auto">
-                    <span class="pull-right text-muted">
-                      <i class="fa fa-fw fa-angle-right text"></i>
-                      <i class="fa fa-fw fa-angle-down text-active"></i>
-                    </span>
-                    <i class="glyphicon glyphicon-file icon"></i>
-                    <span>Курс <%= i + 1 %>: <%= course.name %></span>
-                    
-                  </a>
-                  <ul class="nav nav-sub dk no-padding-li">
-	                  <% for (var j = 0; j < course.stepsData.length; j++) { %>
-	                      <li>
-                          <a href="#">
-                            <span><%= (course.stepsData[j].type == "video")?"Просмотр видео":
-                              (course.stepsData[j].type == "step")?"Шаг":"Неопределенно, сбой на стороне сервера" %> <%= (j == 0)?"":j %>
-                              </span>
-                          </a>
-                        </li>
-                    <% } %>
-                  </ul>
-                </li>
-            <% }%>
-            </ul>
-          </nav>
+          <% include /decorate/nav.ejs %>
           <!-- nav -->
 
           

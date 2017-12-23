@@ -11,5 +11,18 @@
             "user": "",
             "pass": ""
         }
+    },
+    "log": {
+        "path": "log/",
+        "encoding": "utf-8",
+        "continueLogs": false
+    },
+    "server": {
+        "ip": "",
+        "port": "8080"
+    },
+    "login": {
+        "loginFree": ["/css/", "/font/", "/grunt/", "/html/", "/html_old/", "/img/", "/js/", "/landing/", "/libs/",
+            "/newfonts/", "/src/", "/swig/", "/templete/", "/video/"]
     }
 }

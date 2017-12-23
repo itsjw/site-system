@@ -1,0 +1,11 @@
+{
+    "errorText": {
+        "SavingError": "Ошибка сохранения",
+        "FindError": "Не удалось найти",
+        "DeletedError": "Не удалось удалить",
+        "CopyFileError": "Ошибка копирования файлов",
+        "NotValidFileError": "Файл импорта составлен не правильно",
+        "CreateError": "Ошибка, не удалось создать",
+        "PasswordsError": "Пароли не совпадают"
+    }
+}
