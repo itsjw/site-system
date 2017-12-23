@@ -127,7 +127,7 @@ module.exports = function (app, upload) {
             path: "/personal"
         });
         
-        fs.readFile("../" + req.file.path, "utf-8", function(err, data) {
+        fs.readFile("./" + req.file.path, "utf-8", function(err, data) {
             if ( err ) {
                 console.error(err);
                 return res.redirect("/personal?err=" + textErr.NotValidFileError);
@@ -175,7 +175,7 @@ module.exports = function (app, upload) {
                 });
             }
             
-            fs.unlink("../" + req.file.path, function (err) {
+            fs.unlink("./" + req.file.path, function (err) {
                 if (err) {
                     console.error(err);
                 }

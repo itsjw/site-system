@@ -1,6 +1,6 @@
 const hash = require("password-hash"),
     fs = require("fs"),
-    optipns = require("../config.json");
+    options = require("../config.json");
 
 const User = require("./class.js").User;
 
@@ -23,7 +23,7 @@ module.exports = function (app) {
         }).bind( this, req, res);
         
         // if fre login/ next path not used user data
-        var freeLogin = optipns.login.loginFree.find(function (value) {
+        var freeLogin = options.login.loginFree.find(function (value) {
             return req.url.indexOf(value) == 0;
         });
         if (freeLogin) {

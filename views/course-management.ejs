@@ -14,8 +14,9 @@
   <link rel="stylesheet" href="/css/app.css" type="text/css" />
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/knomarystyle.css">
-  <script src="/js/modernizr.custom.js"></script>
-
+  
+  <script src="/js/modernizr.custom.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.9/ace.js" defer></script>
 </head>
 <body>
 <div class="app app-header-fixed ">
@@ -157,9 +158,10 @@
                   <% } %>
                   <td class="text-center" name="position"><%= i %></td>
                   <td style="display:none" name="_id"><%= step._id %></td>
-                  
-                  <td class="text-center"><a href="/deleteStep?courseId=<%= course._id %>&stepId=<%= step._id %>"><i data-modal="modal-9" class="fa md-trigger fa-times" aria-hidden="true"></i></a></td>
-                  <td class="text-center" onclick="loadToForm(event)"><a href="#"><i data-modal="modal-10" class="fa md-trigger fa-pencil" aria-hidden="true"></i></a></td>
+                  <td name="type" style="display:none"><%= step.type %></td>
+                  <td style="display:none" name="_html"><%- step.step %></td>
+                  <td class="text-center"><a href="/deleteStep?courseId=<%= course._id %>&stepId=<%- step._id %>"><i data-modal="modal-9" class="fa md-trigger fa-times" aria-hidden="true"></i></a></td>
+                  <td class="text-center" onclick="loadToForm(event, 'formEditCourse')"><a href="#"><i data-modal="modal-10" class="fa md-trigger fa-pencil" aria-hidden="true"></i></a></td>
                 </tr>
             <% } %>
           <% } %>
@@ -306,9 +308,23 @@
  
               <input name="position" type="text" class="form-control" placeholder="Порядок">
             </div>
+            <div class="form-group">
+              <textarea class="step-textarea" id="editor" name="_html"></textarea>
+            </div>
             
             <input name="_id" type="text" style="display:none">
+            <input name="type" type="text" style="display:none">
             <input name="courseId" type="text" value="<%= course._id %>" style="display:none">
+            <script>
+              function hiddenOrDisplay() {
+                var form = document.getElementById("formEditCourse");
+                if ( form.type.value == "video" ) {
+                  form._html.style.display = "none";
+                } else {
+                  form._html.style.display = "block";
+                }
+              }
+            </script>
             
             <button type="submit" class="btn btn-sm btn-primary">Сохранить</button>
           </form>
@@ -321,9 +337,9 @@
     
   
 <script>
-  function loadToForm (event) {
+  function loadToForm (event, id) {
       const user = event.currentTarget.parentElement,
-          form = document.getElementById("formEditCourse");
+          form = document.getElementById(id);
       
       if ( !( form && user ) ) {
           return console.error(new Error("No user or form#formEditUser.modal-10"));
@@ -340,6 +356,8 @@
               }
           }
       }
+    
+    hiddenOrDisplay();
   }
   
 </script>
@@ -423,7 +441,7 @@
 
 
 
-
+<!--<script src="/ace.js" defer></script>-->
 
 </body>
 </html>

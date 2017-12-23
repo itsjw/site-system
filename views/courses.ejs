@@ -146,11 +146,11 @@
 	        
 	        <% for ( var i = 0; i < courses.length; i++) { %>
               <tr data-expanded="true" id="<%= courses[i]._id %>">
-	              <td> <%= courses[i].name %> </td>  
+	              <td onclick="editCourse(event)" style="cursor:pointer"> <%= courses[i].name %> </td>  
                 <td class="text-center"> <%= courses[i].steps.length %> </td>
                
                 <td class="text-center" onclick="deleteCourse(event)"><a href="#"><i data-modal="modal-9" class="fa md-trigger fa-times" aria-hidden="true"></i></a></td>
-                <td class="text-center" onclick="  editCourse(event)"><a href="#"><i data-modal="modal-10" class="fa md-trigger fa-pencil" aria-hidden="true"></i></a></td>
+                <td class="text-center" onclick="loadIdToForm(event)"><a href="#"><i data-modal="modal-10" class="fa md-trigger fa-pencil" aria-hidden="true"></i></a></td>
               </tr>
 	        <% } %>
 	        
@@ -291,25 +291,24 @@
 			
 			<!-- Контент-->
 			
+			<script>
+			  function loadIdToForm(event) {
+			    var id = event.currentTarget.parentElement.id;
+			    
+			    document.getElementById("renameCourse")._id.value = id;
+			  }
+			</script>
+			
 	<div class="panel panel-default" id="new-teacher">
         <div class="panel-heading font-bold">Редактировать курс</div>
         <div class="panel-body">
-          <form role="form">
+          <form role="form" id="renameCourse" action="/renameCourse" method="POST">
             <div class="form-group">
          
-              <input type="text" class="form-control" placeholder="Название курса">
+              <input type="text" class="form-control" name="name" placeholder="Название курса">
             </div>
-            <div class="form-group">
- 
-              <input type="text" class="form-control" placeholder="Количество элементов">
-            </div>
-            
-
-    
-
-            
-            
-<button type="submit" class="btn btn-sm btn-primary">Сохранить</button>
+            <input style="display:none" name="_id" ></input>
+            <button type="submit" class="btn btn-sm btn-primary">Сохранить</button>
           </form>
         </div>
       </div>

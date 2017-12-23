@@ -168,7 +168,7 @@
                 %>
                 <td><%= count %></td>
                 <td><%= users[i].slides.length %></td>
-                <td onclick="deleteUser(event)"><a href="#"><i data-modal="modal-9" class="fa md-trigger fa-times"   aria-hidden="true"></i></a></td>
+                <td onclick="deleteUser(event)"><a href="#"><i data-modal="modal-11" class="fa md-trigger fa-times"   aria-hidden="true"></i></a></td>
                 <td onclick="loadToForm(event)"><a href="#"><i data-modal="modal-10" class="fa md-trigger fa-pencil" aria-hidden="true"></i></a></td>
                 <td name="_id" style="display:none"><%= users[i]._id %></td>
               </th>
@@ -201,7 +201,7 @@
 	        </p>
           <form role="form" method="POST" action="/import" enctype="multipart/form-data">
               <input type="file" name="users" accept=".csv" >
-              <button type="submit" class="btn btn-sm btn-primary button-users-add">Выберите файл</button>
+              <button type="submit" class="btn btn-sm btn-primary button-users-add">Отправить файл</button>
           </form>
         </div>
       </div>
@@ -405,10 +405,11 @@
    <!-- Конец модального окна "Добавить тренера" -->
    
    
-   
-   
-   
-   
+   <div class="md-modal md-effect-8" id="modal-11">
+   <div class="md-content">
+			<button class="md-close"></button>
+   </div>
+   </div>
    
    
    

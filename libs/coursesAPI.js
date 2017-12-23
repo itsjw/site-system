@@ -66,7 +66,7 @@ module.exports = function (app, upload, dirname) {
                         }
                         
                         if ( step.type == "video") {
-                            fs.unlink("../public/" + step.video, function(err) {
+                            fs.unlink("./public/" + step.video, function(err) {
                                 if ( err ) {
                                     console.error(err);
                                 }
@@ -86,10 +86,34 @@ module.exports = function (app, upload, dirname) {
             });
         });
     });
+    app.post("/renameCourse", function (req, res, next) {
+        if ( !req.passport.admin(next) ) {
+            return;
+        }
+        res.cookie("notDeletQuery", "On", {
+            maxAge: 60 * 60 * 1000,
+            path: "/edit_courses"
+        });
         
+        Course.findById(req.body._id, function (err, course) {
+            if ( err ) {
+                console.error(err);
+                return res.redirect("/edit_courses?err=" + textErr.FindError);
+            }
+            
+            course.name = req.body.name;
+            
+            course.save(function (err) {
+                if (err) {
+                    console.error(err);
+                    return res.redirect("/edit_course?err=" + textErr.SavingError);
+                }
+                res.redirect("/edit_courses?save=Ok");
+            });
+        });
+    });
     
     
-      
     app.get("/addStepInCourseId/:courseId/editId/", function(req, res, next) {
         if ( !req.passport.admin(next) ) {
             return;
@@ -206,9 +230,9 @@ module.exports = function (app, upload, dirname) {
         });
         
         copyFile( req.file.path, 
-            __dirname + "public/video/" + req.file.filename + "." + req.file.mimetype.split("/")[1], 
+            "./public/video/" + req.file.filename + "." + req.file.mimetype.split("/")[1], 
         function (err) {
-            fs.unlink(__dirname + req.file.path, function (err) {
+            fs.unlink( "./" + req.file.path, function (err) {
                 if (err) {
                     console.error(err);
                 }
@@ -236,7 +260,7 @@ module.exports = function (app, upload, dirname) {
                     if ( err ) {
                         console.error(err);
                         
-                        fs.unlink("../public/" + step.video, function(err) {
+                        fs.unlink("./public/" + step.video, function(err) {
                             if ( err ) {
                                 console.error(err);
                             }
@@ -307,7 +331,13 @@ module.exports = function (app, upload, dirname) {
                 
                 step.name = req.body.name;
                 course.steps.splice(index, 1);
-                course.steps.splice( ((+req.body.position > 0)?+req.body.position : 1 ) || index, 0, req.body._id);
+                
+                if ( step.type != "video" ) {
+                    step.step = req.body._html;
+                    course.steps.splice( ((+req.body.position > 0)?+req.body.position : 1 ) || index, 0, req.body._id);
+                } else {
+                    course.steps.splice(0, 0, step);
+                }
                 
                 step.save(function (err) {
                     if (err) {
@@ -365,7 +395,7 @@ module.exports = function (app, upload, dirname) {
                 course.steps.splice(index, 1);
                 
                 if ( step.type == "video" ) {
-                    fs.unlink("../public/" + step.video, function(err) {
+                    fs.unlink("./public/" + step.video, function(err) {
                         if ( err ) {
                             console.error(err);
                         }

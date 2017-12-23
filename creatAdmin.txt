@@ -1,0 +1,6 @@
+Step #1
+  Start mongodb (database)
+
+Step #2
+  Write data in db.js
+  Run db.js
