@@ -304,29 +304,44 @@
               <input type="text" class="form-control" placeholder="Тип элемента">
             </div>-->
             
-             <div class="form-group">
- 
+             <div class="form-group" id="marginForEditor" style="margin-bottom:250px;">
               <input name="position" type="text" class="form-control" placeholder="Порядок">
             </div>
-            <div class="form-group">
-              <textarea class="step-textarea" id="editor" name="_html"></textarea>
+            <div class="form-group" style="display:none">
+              <textarea class="step-textarea"  name="_html"></textarea>
             </div>
+            <div id="editor"></div>
             
             <input name="_id" type="text" style="display:none">
             <input name="type" type="text" style="display:none">
             <input name="courseId" type="text" value="<%= course._id %>" style="display:none">
+            <style>
+              #editor { 
+                  position: absolute;
+                  top: 200px;
+                  right: 7.5%; 
+                  bottom: 75px;
+                  left: 7.5%; 
+              }
+            </style>
             <script>
               function hiddenOrDisplay() {
-                var form = document.getElementById("formEditCourse");
+                var form = document.getElementById("formEditCourse"),
+                  _html =  document.getElementById("editor"),
+                  margin = document.getElementById("marginForEditor").style;
                 if ( form.type.value == "video" ) {
-                  form._html.style.display = "none";
+                  margin.marginBottom = "15px";
+                  _html.style.display = "none";
                 } else {
-                  form._html.style.display = "block";
+                  margin.marginBottom = "250px";
+                  _html.style.display = "block";
                 }
+                
+                _editor.setValue(form._html.value);
               }
             </script>
             
-            <button type="submit" class="btn btn-sm btn-primary">Сохранить</button>
+            <button type="submit" onclick="document.getElementById('formEditCourse')._html.value = _editor.getValue()" class="btn btn-sm btn-primary">Сохранить</button>
           </form>
         </div>
       </div>
@@ -375,25 +390,6 @@
    
    <!-- Конец модального окна "Добавить тренера" -->
    
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-
 </div>
 
 
@@ -441,7 +437,7 @@
 
 
 
-<!--<script src="/ace.js" defer></script>-->
+<script src="/ace.js" defer></script>
 
 </body>
 </html>

@@ -25,8 +25,18 @@ app.use(bodyParser.raw({ type: 'application/form-data' }));
 app.use(cookieParser());
 
 //loger
-app.use(require("./libs/logers.js"));
-//var console = require("console");
+const loger = require("./libs/logers.js");
+app.use(function (req, res, next) {
+    var freeLogin = options.login.loginFree.find(function (value) {
+        return req.url.indexOf(value) == 0;
+    });
+    if (freeLogin) {
+        return next();
+    } else {
+        loger(req, res, next);
+    }
+});
+
 
 app.set('view engine', 'ejs');
 app.engine("ejs", require("ejs-locals"));
@@ -68,7 +78,7 @@ app.use("/", function(err, req, res, next) {
         statusMesage: statusMesage || http.STATUS_CODES[status],
         
     }, function (err, data) {
-        res.send(data || "<pre>" + err +"</pre>");
+        res.status(status).send(data || "<pre>" + err +"</pre>");
     });
     
     if ( req.user ) {
