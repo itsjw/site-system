@@ -199,8 +199,8 @@
 	        <p class="exampletext">
 	        Данная функция позволяет выполнить массовый импорт пользователей. Импорт выполняется в формате .csv <br><br> В файле должны присутствовать следующие колонки: Имя, Фамилия, E-mail, Пароль. <br><br> Скачайте <a href="example.csv">пример файла</a> для соблюдения точного соответствия формату.
 	        </p>
-          <form role="form" method="POST" action="/import" enctype="multipart/form-data">
-              <input type="file" name="users" accept=".csv" >
+          <form role="form" method="POST" action="/import" enctype="multipart/form-data" style="text-align:center">
+              <input type="file" name="users" accept=".csv" style="display: inline-block;margin-bottom: 15px;background-color: #86a91b;border-color: #7ca223;" class="btn btn-sm btn-primary button-users-add">
               <button type="submit" class="btn btn-sm btn-primary button-users-add">Отправить файл</button>
           </form>
         </div>
